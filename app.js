@@ -567,6 +567,6 @@ app.listen(port, function(){
   console.log("Server started successfully")
 });
 
-//Launch listening server on port 8080
+//Launch listening server on port 8081
 // app.listen(8081, "0.0.0.0");
-// console.log("App is running on http://8081:0.0.0.0");
+// console.log("App is running on http://0.0.0.0:8081");
