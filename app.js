@@ -33,7 +33,12 @@ app.get("/recipes", async (request, response) => {
 app.get("/recipe/:id", async (request, response) => {
   try {
     var recipe = await Recipe.findById(request.params.id).exec();
-    response.send(recipe);
+    if (recipe.tags) {
+      recipe.suggestions = await Recipe.find({tags: {$in : recipe.tags}});
+      console.log(recipe.suggestions.length)
+    }
+    console.log(recipe.suggestions.length, "*&*&*&*&*&&*");
+    response.send(Object.assign({a: "hello world"}, recipe));
   } catch (error) {
     response.status(500).send(error);
   }
@@ -66,18 +71,7 @@ app.get("/", function (req, res) {
 mongoose.connect('mongodb+srv://admin-ates:admin-ates@cluster0-ms8ok.mongodb.net/recipesDB', { useNewUrlParser: true });
 
 Recipe.find({}, function (err, foundItems) {
-  Recipe.deleteMany();
-  console.log(foundItems.length)
-  //if (foundItems.length === 0) {
-  //  Recipe.insertMany(defaultRecipes, function (err) {
-  //    if (err) {
-  //      console.log(err);
-  //    } else {
-  //      console.log("Successfully saved all the recipes to DB");
-  //    }
-  //  });
-  //}
-
+  console.log(foundItems.length);
 });
 
 let port = process.env.PORT || 8081;
